@@ -1,0 +1,75 @@
+---
+// GraphViewer.astro — 3Dビューア埋め込みコンポーネント
+---
+
+<div class="viewer-wrapper">
+  <div class="viewer-header">
+    <h3>3Dグラフビューア</h3>
+    <p>以下のビューアで、URLからクロールした結果を3Dで可視化できます。</p>
+  </div>
+  <div class="viewer-container">
+    <iframe src="/viewer/index.html" title="gg 3D Graph Viewer"></iframe>
+  </div>
+  <div class="viewer-footer">
+    <p>新しいタブで開く: <a href="/viewer/index.html" target="_blank">/viewer/index.html</a></p>
+  </div>
+</div>
+
+<style>
+  .viewer-wrapper {
+    background: var(--bg-surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+
+  .viewer-header {
+    padding: 1.5rem;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .viewer-header h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.3rem;
+  }
+
+  .viewer-header p {
+    font-size: 0.85rem;
+    color: var(--ink-muted);
+  }
+
+  .viewer-container {
+    position: relative;
+    width: 100%;
+    height: 700px;
+    background: var(--bg-deep);
+  }
+
+  .viewer-container iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+  }
+
+  .viewer-footer {
+    padding: 0.8rem 1.5rem;
+    border-top: 1px solid var(--line);
+    text-align: center;
+  }
+
+  .viewer-footer p {
+    font-size: 0.8rem;
+    color: var(--ink-muted);
+  }
+
+  .viewer-footer a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  .viewer-footer a:hover {
+    text-decoration: underline;
+  }
+</style>

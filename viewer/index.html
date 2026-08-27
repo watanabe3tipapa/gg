@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>gg — graph_gen 3D Viewer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header>
+    <div class="nav">
+      <a href="#" class="logo">gg<span>graph_gen</span></a>
+      <nav class="nav-links">
+        <a href="#how">仕組み</a>
+        <a href="#api">API</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="hero-inner">
+      <h1>リンク構造を<span>3Dグラフ化</span></h1>
+      <p>起点URLから再帰的にリンクを辿り、サイト全体の構造をThree.jsでインタラクティブに可視化します。</p>
+
+      <div class="tabs">
+        <button class="tab-btn active" data-tab="crawl">URLからクロール</button>
+        <button class="tab-btn" data-tab="json">JSON読込</button>
+        <button class="tab-btn" data-tab="demo">デモ</button>
+      </div>
+
+      <!-- Crawl Mode -->
+      <div class="form-box" id="panel-crawl">
+        <form id="crawl-form">
+          <div class="field row-2">
+            <div class="url-input-wrap">
+              <input type="text" class="url-input" id="crawl-url" placeholder="example.com" value="sakana.ai">
+            </div>
+            <select id="crawl-depth">
+              <option value="1">深さ 1</option>
+              <option value="2" selected>深さ 2</option>
+              <option value="3">深さ 3</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary" id="crawl-btn">クロール開始</button>
+        </form>
+      </div>
+
+      <!-- JSON Mode -->
+      <div class="form-box" id="panel-json" style="display:none;">
+        <div class="dropzone" id="dropzone">
+          <div class="dropzone-icon">&#x1F4E5;</div>
+          <div class="dropzone-title">graph.json をドロップ</div>
+          <div class="dropzone-desc">またはクリックしてファイルを選択</div>
+        </div>
+        <input type="file" id="file-input" accept=".json">
+        <div class="field" style="margin-top: 1rem;">
+          <textarea class="json-input" id="json-input" placeholder='{ "startUrl": "...", "nodes": [...], "links": [...] }'></textarea>
+        </div>
+        <button type="button" class="btn btn-primary" id="json-btn">JSONから描画</button>
+      </div>
+
+      <!-- Demo Mode -->
+      <div class="form-box" id="panel-demo" style="display:none;">
+        <form id="demo-form">
+          <div class="field row-2">
+            <div class="url-input-wrap">
+              <input type="text" class="url-input" id="demo-url" placeholder="example.com" value="sakana.ai">
+            </div>
+            <select id="demo-depth">
+              <option value="1">深さ 1</option>
+              <option value="2" selected>深さ 2</option>
+              <option value="3">深さ 3</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary" id="demo-btn">デモデータ生成</button>
+        </form>
+      </div>
+
+      <div class="status-bar" id="status-bar">
+        <div class="spinner"></div>
+        <div class="status-text" id="status-text">準備中...</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="graph-section" id="graph-section">
+    <div class="stats-bar" id="stats-bar"></div>
+    <div class="graph-toolbar">
+      <div class="graph-info">
+        <h2 id="graph-title">-</h2>
+        <p id="graph-subtitle">起点ノードは中央に固定。色は起点からの深さを表します。</p>
+      </div>
+      <div class="graph-actions">
+        <div class="layout-switch">
+          <button class="layout-btn active" data-layout="force3d" title="力指向3D">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="3"/>
+              <circle cx="4" cy="6" r="2"/>
+              <circle cx="20" cy="6" r="2"/>
+              <circle cx="4" cy="18" r="2"/>
+              <circle cx="20" cy="18" r="2"/>
+              <line x1="9" y1="10" x2="5" y2="7"/>
+              <line x1="15" y1="10" x2="19" y2="7"/>
+              <line x1="9" y1="14" x2="5" y2="17"/>
+              <line x1="15" y1="14" x2="19" y2="17"/>
+            </svg>
+          </button>
+          <button class="layout-btn" data-layout="tree3d" title="階層ツリー3D">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="4" r="3"/>
+              <circle cx="6" cy="12" r="2"/>
+              <circle cx="18" cy="12" r="2"/>
+              <circle cx="4" cy="20" r="1.5"/>
+              <circle cx="8" cy="20" r="1.5"/>
+              <circle cx="16" cy="20" r="1.5"/>
+              <circle cx="20" cy="20" r="1.5"/>
+              <line x1="12" y1="7" x2="6" y2="10"/>
+              <line x1="12" y1="7" x2="18" y2="10"/>
+              <line x1="6" y1="14" x2="4" y2="18.5"/>
+              <line x1="6" y1="14" x2="8" y2="18.5"/>
+              <line x1="18" y1="14" x2="16" y2="18.5"/>
+              <line x1="18" y1="14" x2="20" y2="18.5"/>
+            </svg>
+          </button>
+        </div>
+        <button class="action-btn" id="btn-stop" style="display:none;">停止</button>
+        <button class="action-btn" id="btn-reset">リセット</button>
+        <button class="action-btn" id="btn-export">JSON出力</button>
+      </div>
+    </div>
+    <div class="graph-container" id="graph-container">
+      <canvas id="graph-canvas"></canvas>
+      <div class="tooltip" id="tooltip">
+        <div class="tooltip-title" id="tt-title"></div>
+        <div class="tooltip-meta" id="tt-meta"></div>
+      </div>
+      <div class="depth-legend" id="depth-legend">
+        <div class="depth-legend-title">深度</div>
+        <div class="depth-row"><span class="depth-dot" style="background:#6366f1"></span>起点 (0)</div>
+        <div class="depth-row"><span class="depth-dot" style="background:#a78bfa"></span>深さ 1</div>
+        <div class="depth-row"><span class="depth-dot" style="background:#2dd4bf"></span>深さ 2</div>
+        <div class="depth-row"><span class="depth-dot" style="background:#fbbf24"></span>深さ 3+</div>
+      </div>
+      <div class="legend">
+        <div class="legend-item"><span class="legend-dot" style="background:#6366f1"></span>起点</div>
+        <div class="legend-item"><span class="legend-dot" style="background:#a78bfa"></span>深さ1</div>
+        <div class="legend-item"><span class="legend-dot" style="background:#2dd4bf"></span>深さ2</div>
+        <div class="legend-item"><span class="legend-dot" style="background:#fbbf24"></span>深さ3+</div>
+      </div>
+      <div class="side-panel" id="side-panel">
+        <button class="panel-close" id="panel-close">&times;</button>
+        <h3 id="panel-title">Node</h3>
+        <a href="#" class="panel-url" id="panel-url" target="_blank"></a>
+        <div class="panel-meta" id="panel-meta"></div>
+        <div class="panel-section">起点からの経路</div>
+        <ul class="link-list" id="panel-path"></ul>
+        <div class="panel-section">関連リンク</div>
+        <ul class="link-list" id="panel-links"></ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="how" id="how">
+    <h2>仕組み：3ステップでサイト構造を可視化</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <h3>URLを入力してクロール</h3>
+        <p>Cloudflare Workerが起点URLからBFSでリンクを全て探査します。</p>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <h3>graph.json を生成</h3>
+        <p>クロール結果がnodes（ページ）とlinks（リンク関係）としてJSON出力されます。</p>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <h3>3Dグラフで可視化</h3>
+        <p>Three.jsでインタラクティブな3Dグラフを描画。力指向と階層ツリーを切替可能。</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="code-block" id="api">
+    <h3>API — Worker エンドポイント</h3>
+    <pre><code><span class="c">// POST /api/crawl</span>
+<span class="k">const</span> response = <span class="k">await</span> <span class="f">fetch</span>(<span class="s">'/api/crawl'</span>, {
+  <span class="f">method</span>: <span class="s">'POST'</span>,
+  <span class="f">headers</span>: { <span class="s">'Content-Type'</span>: <span class="s">'application/json'</span> },
+  <span class="f">body</span>: JSON.<span class="f">stringify</span>({
+    <span class="f">url</span>: <span class="s">'https://example.com'</span>,
+    <span class="f">depth</span>: <span class="s">2</span>,
+    <span class="f">sameOriginOnly</span>: <span class="s">true</span>
+  })
+});
+
+<span class="c">// ストリーミングレスポンス</span>
+<span class="k">const</span> reader = response.body.<span class="f">getReader</span>();
+<span class="k">while</span> (<span class="s">true</span>) {
+  <span class="k">const</span> { done, value } = <span class="k">await</span> reader.<span class="f">read</span>();
+  <span class="k">if</span> (done) <span class="k">break</span>;
+  <span class="k">const</span> lines = <span class="k">new</span> <span class="f">TextDecoder</span>().<span class="f">decode</span>(value).<span class="f">split</span>(<span class="s">'\n'</span>);
+  <span class="k">for</span> (<span class="k">const</span> line <span class="k">of</span> lines) {
+    <span class="k">const</span> event = JSON.<span class="f">parse</span>(line);
+    <span class="k">if</span> (event.type === <span class="s">'progress'</span>) <span class="f">updateProgress</span>(event.progress);
+    <span class="k">if</span> (event.type === <span class="s">'complete'</span>) <span class="f">renderGraph</span>(event.data);
+  }
+}</code></pre>
+  </section>
+
+  <footer>
+    gg — graph_gen 3D Viewer
+  </footer>
+
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.161.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.161.0/examples/jsm/"
+    }
+  }
+  </script>
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

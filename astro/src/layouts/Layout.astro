@@ -1,0 +1,224 @@
+---
+interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="gg — graph_gen: URLからリンク構造を3Dグラフで可視化する汎用ツール" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content="起点URLから再帰的にリンクを辿り、サイト全体の構造をThree.jsでインタラクティブに可視化" />
+    <meta property="og:type" content="website" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <title>{title}</title>
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>
+
+<style is:global>
+  :root {
+    --bg-deep: #080a10;
+    --bg-surface: #11141d;
+    --bg-elevated: #191d28;
+    --bg-input: #0c0f16;
+    --ink: #e4e6ed;
+    --ink-muted: #8b90a6;
+    --ink-faint: #484d5e;
+    --accent: #6366f1;
+    --accent-dim: color-mix(in oklab, var(--accent) 15%, var(--bg-surface));
+    --accent-glow: color-mix(in oklab, var(--accent) 40%, transparent);
+    --line: color-mix(in oklab, var(--ink) 8%, transparent);
+    --radius: 14px;
+    --shadow: 0 32px 100px -24px rgba(0,0,0,0.8);
+    --font-sans: "Inter", "Hiragino Sans", "Yu Gothic", "Noto Sans JP", sans-serif;
+    --font-mono: "JetBrains Mono", "SF Mono", "Noto Sans JP", monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    width: 100%;
+    min-height: 100vh;
+    background: var(--bg-deep);
+    color: var(--ink);
+    font-family: var(--font-sans);
+  }
+
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: color-mix(in oklab, var(--bg-deep) 90%, transparent);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .nav {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0.85rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .logo {
+    font-weight: 700;
+    font-size: 1.12rem;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    text-decoration: none;
+  }
+
+  .logo span {
+    color: var(--accent);
+    margin-left: 0.3rem;
+    font-size: 0.85rem;
+    font-weight: 400;
+  }
+
+  .nav-links a {
+    color: var(--ink-muted);
+    text-decoration: none;
+    font-size: 0.82rem;
+    margin-left: 1.4rem;
+    transition: color 0.15s;
+  }
+
+  .nav-links a:hover {
+    color: var(--ink);
+  }
+
+  .hero {
+    position: relative;
+    padding: 6rem 1.5rem 3rem;
+    text-align: center;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 55% 45% at 50% -8%, var(--accent-glow), transparent 72%),
+                radial-gradient(ellipse 30% 30% at 85% 80%, rgba(99,102,241,0.05), transparent 60%);
+    pointer-events: none;
+  }
+
+  .hero-inner {
+    position: relative;
+    z-index: 2;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  .hero h1 {
+    font-size: clamp(1.8rem, 5vw, 3rem);
+    font-weight: 700;
+    line-height: 1.12;
+    letter-spacing: -0.03em;
+    margin-bottom: 1rem;
+  }
+
+  .hero h1 span {
+    color: var(--accent);
+  }
+
+  .hero p {
+    color: var(--ink-muted);
+    font-size: clamp(0.92rem, 1.8vw, 1.1rem);
+    line-height: 1.75;
+    margin-bottom: 2rem;
+  }
+
+  .features {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 4rem 1.5rem;
+  }
+
+  .features h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+
+  .feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .feature-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    transition: border-color 0.2s;
+  }
+
+  .feature-card:hover {
+    border-color: var(--accent);
+  }
+
+  .feature-card h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  .feature-card p {
+    font-size: 0.9rem;
+    color: var(--ink-muted);
+    line-height: 1.65;
+  }
+
+  .viewer-section {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 1.5rem 4rem;
+  }
+
+  .viewer-frame {
+    background: var(--bg-surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+
+  .viewer-frame iframe {
+    width: 100%;
+    height: 700px;
+    border: none;
+  }
+
+  footer {
+    text-align: center;
+    padding: 2.5rem 1.5rem;
+    color: var(--ink-faint);
+    font-size: 0.78rem;
+    border-top: 1px solid var(--line);
+  }
+
+  footer a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  footer a:hover {
+    text-decoration: underline;
+  }
+</style>
