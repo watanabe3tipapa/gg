@@ -40,3 +40,9 @@ gg (graph_gen) のバージョン履歴。
 | サーバー | Cloudflare Worker + Durable Objects |
 | クローラー | cheerio |
 | ビルド | Wrangler (Worker) + Astro Build |
+
+### デプロイ
+
+- GitHub Pages: `https://watanabe3tipapa.github.io/gg/`
+- Cloudflare Pages: `https://gg.pages.dev/`
+- GitHub Actions で自動デプロイ
