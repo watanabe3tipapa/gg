@@ -2,7 +2,8 @@
 import { defineConfig } from 'astro/config';
 
 export default defineConfig({
-  site: 'https://gg.pages.dev',
+  site: 'https://watanabe3tipapa.github.io',
+  base: '/gg',
   build: {
     format: 'file',
   },
