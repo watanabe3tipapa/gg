@@ -1,0 +1,7 @@
+{
+  "name": "gg",
+  "type": "module",
+  "scripts": {
+    "build": "cd astro && npm install && npm run build"
+  }
+}
