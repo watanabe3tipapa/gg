@@ -2,6 +2,6 @@
   "name": "gg",
   "type": "module",
   "scripts": {
-    "build": "cd astro && npm install && npm run build"
+    "build": "cd astro && npm install && npm run build && cp -r dist ../dist"
   }
 }
