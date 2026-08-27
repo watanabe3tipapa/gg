@@ -2,5 +2,6 @@ name = "gg"
 compatibility_date = "2024-01-01"
 
 [pages]
-build_command = "cd astro && npm install && npm run build"
-build_output_dir = "astro/dist"
+build_command = "npm install && npm run build"
+build_output_dir = "dist"
+build_working_dir = "astro"

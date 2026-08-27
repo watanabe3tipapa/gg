@@ -155,6 +155,24 @@ Basic workflow:
 
 ---
 
+## Deployment
+
+### GitHub Pages
+
+1. Go to GitHub repo Settings → Pages
+2. Source: Select GitHub Actions
+3. Auto-deploys on push
+
+### Cloudflare Pages
+
+1. Cloudflare Dashboard → Pages → Create a project
+2. Connect repository `watanabe3tipapa/gg`
+3. **Root directory: `astro`** (important)
+4. Build command: `npm install && npm run build`
+5. Build output directory: `dist`
+
+---
+
 ## License
 
 MIT License — See LICENSE file for details.

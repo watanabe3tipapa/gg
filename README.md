@@ -153,6 +153,24 @@ gg/
 
 ---
 
+## デプロイ
+
+### GitHub Pages
+
+1. GitHub リポジトリの Settings → Pages
+2. Source: GitHub Actions を選択
+3. push で自動デプロイ
+
+### Cloudflare Pages
+
+1. Cloudflare Dashboard → Pages → Create a project
+2. リポジトリ `watanabe3tipapa/gg` を接続
+3. **Root directory: `astro`** を設定（重要）
+4. Build command: `npm install && npm run build`
+5. Build output directory: `dist`
+
+---
+
 ## ライセンス
 
 MIT ライセンス — 詳細は LICENSE ファイルを参照してください。
