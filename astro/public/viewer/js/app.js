@@ -50,7 +50,8 @@ class GGApp {
       document.getElementById('btn-stop').style.display = 'inline-flex';
 
       try {
-        const response = await fetch('/api/crawl', {
+        const API_BASE = 'https://gg-worker.watanabe3ti.workers.dev';
+        const response = await fetch(`${API_BASE}/api/crawl`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ url, depth, sameOriginOnly: true }),
@@ -146,7 +147,7 @@ class GGApp {
   initActions() {
     document.getElementById('btn-stop').addEventListener('click', async () => {
       if (this.sessionId) {
-        await fetch(`/api/session?id=${this.sessionId}`, { method: 'POST' });
+        await fetch(`https://gg-worker.watanabe3ti.workers.dev/api/session?id=${this.sessionId}`, { method: 'POST' });
         this.showStatus('停止しました');
         document.getElementById('btn-stop').style.display = 'none';
       }

@@ -1,7 +1,7 @@
 // crawler.ts — BFS クロールロジック
 
 import * as cheerio from 'cheerio';
-import { URL } from 'url';
+import { URL } from 'node:url';
 import { GraphNode, GraphLink, GraphData } from './types';
 
 const SKIP_PATTERNS = [

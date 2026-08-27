@@ -1,6 +1,7 @@
 // index.ts — gg Worker メイン
 
 import { Env } from './types';
+export { CrawlSession } from './session';
 
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {

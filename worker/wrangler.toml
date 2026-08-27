@@ -1,10 +1,7 @@
 name = "gg-worker"
 main = "src/index.ts"
-compatibility_date = "2024-01-01"
+compatibility_date = "2024-09-23"
 compatibility_flags = ["nodejs_compat"]
-
-[env]
-CRAWL_API = "/api/crawl"
 
 [[durable_objects.bindings]]
 name = "CRAWL_SESSION"
@@ -12,4 +9,4 @@ class_name = "CrawlSession"
 
 [[migrations]]
 tag = "v1"
-new_classes = ["CrawlSession"]
+new_sqlite_classes = ["CrawlSession"]
