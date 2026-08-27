@@ -6,7 +6,7 @@ gg (graph_gen) のバージョン履歴。
 
 ## v0.1.1 (2026-08-27)
 
-Cloudflare Pages デプロイ成功。
+Cloudflare Pages デプロイ設定中。
 
 ## v0.1.0 (2026-08-27)
 
