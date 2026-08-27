@@ -46,3 +46,7 @@ gg (graph_gen) のバージョン履歴。
 - GitHub Pages: `https://watanabe3tipapa.github.io/gg/`
 - Cloudflare Pages: `https://gg.pages.dev/`
 - GitHub Actions で自動デプロイ
+
+　　"npx wrangler pages deploy dist --project-name=gg"
+
+---
