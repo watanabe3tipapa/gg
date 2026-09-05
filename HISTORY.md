@@ -10,6 +10,10 @@ gg (graph_gen) のバージョン履歴。
 
 - バージョン統一: README バッジ・`astro/package.json`・`worker/package.json`（各 lock 含む）を v0.1.7 に更新
 - ドキュメント整備: タイポ修正（`视角` → `視点`）、デプロイ URL の実値反映
+- viewer のストリーミング JSON 解析修正（チャンク境界で JSON 行が分割され `Unterminated string` になる問題をバッファ方式に修正）: commit `2ad0f9b`
+- Worker 404 復旧（アカウント上から Worker が消えていたのを `wrangler deploy` で再デプロイ）
+- CF Pages ビルド失敗修正（`sed -i ''` が Linux ビルド環境で失敗 → `sed -i.bak` + `rm` の両 OS 対応に変更）: commit `a67a5c0`
+- **リポジトリを public 化** — private のままでは GitHub Pages が使えなかったため。public 化で GH Pages 復活（commit `56eaff7` でデプロイ再実行 → success）
 - デプロイ状態:
   - GitHub Pages: `https://watanabe3tipapa.github.io/gg/`（Actions 自動デプロイ）
   - Cloudflare Pages: `https://gg-7sj.pages.dev/`（dashboard Git 連携、Build: `npm run build` / Output: `dist`）
