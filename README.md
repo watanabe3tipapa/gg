@@ -5,7 +5,7 @@
 gg は、URLからサイトのリンク構造を採取し、Three.js ベースの3Dグラフとして可視化する汎用ツールです。Cloudflare Worker によるサーバーレスクロールと、Astro ベースの静的LPを組み合わせ、手軽にサイト構造を把握できます。
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/version-v0.1.0-blue.svg)](https://github.com/watanabe3tipapa/gg/releases)
+[![Version](https://img.shields.io/badge/version-v0.1.7-blue.svg)](https://github.com/watanabe3tipapa/gg/releases)
 [![Cloudflare Workers](https://img.shields.io/badge/Cloudflare%20Workers-orange.svg)](https://workers.cloudflare.com/)
 [![GitHub](https://img.shields.io/github/issues/watanabe3tipapa/gg.svg)](https://github.com/watanabe3tipapa/gg/issues)
 
@@ -189,4 +189,4 @@ MIT ライセンス — 詳細は LICENSE ファイルを参照してくださ�
 ## 開発・保守状態
 
 - リポジトリはアーカイブされていません。
-- 最終更新: 2026-08-27
+- 最終更新: 2026-09-05

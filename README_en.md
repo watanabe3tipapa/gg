@@ -5,7 +5,7 @@
 gg is a general-purpose tool that crawls a website's link structure from a URL and visualizes it as an interactive 3D graph using Three.js. It combines a serverless crawler powered by Cloudflare Worker with a static landing page built on Astro.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/version-v0.1.0-blue.svg)](https://github.com/watanabe3tipapa/gg/releases)
+[![Version](https://img.shields.io/badge/version-v0.1.7-blue.svg)](https://github.com/watanabe3tipapa/gg/releases)
 [![Cloudflare Workers](https://img.shields.io/badge/Cloudflare%20Workers-orange.svg)](https://workers.cloudflare.com/)
 [![GitHub](https://img.shields.io/github/issues/watanabe3tipapa/gg.svg)](https://github.com/watanabe3tipapa/gg/issues)
 
@@ -191,4 +191,4 @@ MIT License — See LICENSE file for details.
 ## Development Status
 
 - Repository is not archived.
-- Last updated: 2026-08-27
+- Last updated: 2026-09-05

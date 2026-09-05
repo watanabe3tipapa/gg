@@ -1,6 +1,6 @@
 {
   "name": "gg-worker",
-  "version": "1.0.0",
+  "version": "0.1.7",
   "description": "gg (graph_gen) Cloudflare Worker API",
   "main": "src/index.ts",
   "scripts": {

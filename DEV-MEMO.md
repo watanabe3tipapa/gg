@@ -3,6 +3,9 @@
 ## 概要
 汎用グラフ生成ツール。URLからリンク構造を採取し、Three.js 3Dで可視化する。
 
+## 現在のバージョン
+- **v0.1.7 (2026-09-05)** — バージョン管理箇所を統一: README バッジ / `astro/package.json` / `worker/package.json` / 各 lock / HISTORY.md
+
 ## デプロイ先（2026-09-05 確定）
 - GitHub Pages: `https://watanabe3tipapa.github.io/gg/`（Actions で `astro/dist` をアップロード）
 - Cloudflare Pages: `https://gg-7sj.pages.dev/`（dashboard Git連携。Build: `npm run build` / Output: `dist`）

@@ -4,6 +4,17 @@ gg (graph_gen) のバージョン履歴。
 
 ---
 
+## v0.1.7 (2026-09-05)
+
+現在のリリース状態。バージョン表記の全箇所を統一。
+
+- バージョン統一: README バッジ・`astro/package.json`・`worker/package.json`（各 lock 含む）を v0.1.7 に更新
+- ドキュメント整備: タイポ修正（`视角` → `視点`）、デプロイ URL の実値反映
+- デプロイ状態:
+  - GitHub Pages: `https://watanabe3tipapa.github.io/gg/`（Actions 自動デプロイ）
+  - Cloudflare Pages: `https://gg-7sj.pages.dev/`（dashboard Git 連携、Build: `npm run build` / Output: `dist`）
+  - Worker API: `https://gg-worker.watanabe3ti.workers.dev/`
+
 ## v0.1.2 (2026-09-05)
 
 総点検（機能・整合性チェック）。
