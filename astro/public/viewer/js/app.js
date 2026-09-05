@@ -60,13 +60,18 @@ class GGApp {
         this.sessionId = response.headers.get('X-Session-Id');
         const reader = response.body.getReader();
         const decoder = new TextDecoder();
+        let buffer = '';
 
         while (true) {
           const { done, value } = await reader.read();
           if (done) break;
 
-          const lines = decoder.decode(value).split('\n').filter(Boolean);
+          buffer += decoder.decode(value, { stream: true });
+          const lines = buffer.split('\n');
+          buffer = lines.pop() || '';
+
           for (const line of lines) {
+            if (!line.trim()) continue;
             const event = JSON.parse(line);
             if (event.type === 'progress') {
               this.updateProgress(event.progress);
@@ -76,6 +81,12 @@ class GGApp {
               this.showError(event.error);
             }
           }
+        }
+
+        if (buffer.trim()) {
+          const event = JSON.parse(buffer);
+          if (event.type === 'complete') this.renderGraph(event.data);
+          else if (event.type === 'error') this.showError(event.error);
         }
       } catch (err) {
         this.showError(err.message);
