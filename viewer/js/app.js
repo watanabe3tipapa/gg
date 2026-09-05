@@ -42,7 +42,7 @@ class GGApp {
   initCrawlForm() {
     document.getElementById('crawl-form').addEventListener('submit', async (e) => {
       e.preventDefault();
-      const url = document.getElementById('crawl-url').value.trim();
+      const url = this.normalizeUrl(document.getElementById('crawl-url').value.trim());
       const depth = parseInt(document.getElementById('crawl-depth').value, 10);
       if (!url) return;
 
@@ -194,15 +194,16 @@ class GGApp {
   }
 
   updateStats(data) {
-    const maxDepth = Math.max(...data.nodes.map(n => n.depth ?? 0));
+    const total = data.nodes.length;
+    const maxDepth = total ? Math.max(...data.nodes.map(n => n.depth ?? 0)) : 0;
     const orphans = data.nodes.filter(n => !data.links.some(l =>
       (l.source === n.id || l.target === n.id)
     )).length;
     document.getElementById('stats-bar').innerHTML = `
-      <div class="stat-card"><div class="stat-value">${data.nodes.length}</div><div class="stat-label">ページ</div></div>
+      <div class="stat-card"><div class="stat-value">${total}</div><div class="stat-label">ページ</div></div>
       <div class="stat-card"><div class="stat-value">${data.links.length}</div><div class="stat-label">リンク</div></div>
       <div class="stat-card"><div class="stat-value">${maxDepth}</div><div class="stat-label">最大深度</div></div>
-      <div class="stat-card"><div class="stat-value">${(data.links.length / data.nodes.length).toFixed(1)}</div><div class="stat-label">平均次数</div></div>
+      <div class="stat-card"><div class="stat-value">${total ? (data.links.length / total).toFixed(1) : '0.0'}</div><div class="stat-label">平均次数</div></div>
       <div class="stat-card"><div class="stat-value">${orphans}</div><div class="stat-label">孤立ノード</div></div>
     `;
   }
@@ -294,6 +295,10 @@ class GGApp {
   shortenUrl(url) {
     try { const u = new URL(url); return u.pathname === '/' ? u.hostname : u.hostname + u.pathname; }
     catch { return url; }
+  }
+
+  normalizeUrl(url) {
+    return /^https?:\/\//i.test(url) ? url : 'https://' + url;
   }
 
   delay(ms) { return new Promise(r => setTimeout(r, ms)); }

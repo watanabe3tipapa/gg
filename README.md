@@ -165,9 +165,18 @@ gg/
 
 1. Cloudflare Dashboard → Pages → Create a project
 2. リポジトリ `watanabe3tipapa/gg` を接続
-3. **Root directory: `astro`** を設定（重要）
-4. Build command: `npm install && npm run build`
-5. Build output directory: `dist`
+3. Build command: `npm run build`（root package.json。Astro build + `dist` へのコピー + `/gg` base の除去を行う）
+4. Build output directory: `dist`
+5. 参照: `https://gg-7sj.pages.dev/`
+
+### Worker API
+
+```bash
+cd worker
+npm install
+npx wrangler deploy
+# → https://gg-worker.watanabe3ti.workers.dev
+```
 
 ---
 

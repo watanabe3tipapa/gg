@@ -167,9 +167,18 @@ Basic workflow:
 
 1. Cloudflare Dashboard → Pages → Create a project
 2. Connect repository `watanabe3tipapa/gg`
-3. **Root directory: `astro`** (important)
-4. Build command: `npm install && npm run build`
-5. Build output directory: `dist`
+3. Build command: `npm run build` (root package.json. Runs Astro build, copies to `dist`, and strips the `/gg` base)
+4. Build output directory: `dist`
+5. See: `https://gg-7sj.pages.dev/`
+
+### Worker API
+
+```bash
+cd worker
+npm install
+npx wrangler deploy
+# → https://gg-worker.watanabe3ti.workers.dev
+```
 
 ---
 

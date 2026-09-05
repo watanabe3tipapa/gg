@@ -1,7 +1,7 @@
 // session.ts — Durable Object（セッション管理）
 
 import { DurableObject } from 'cloudflare:workers';
-import { crawlDepth, createGraphData } from './crawler';
+import { crawlDepth, createGraphData, ensureScheme } from './crawler';
 import { SessionState, GraphData } from './types';
 
 export class CrawlSession extends DurableObject {
@@ -30,13 +30,13 @@ export class CrawlSession extends DurableObject {
 
     this.state = {
       id: this.ctx.id.toString(),
-      url,
+      url: ensureScheme(url),
       maxDepth: depth,
       status: 'running',
       nodes: [],
       links: [],
       visited: {},
-      queue: [{ url, depth: 0, from: null }],
+      queue: [{ url: ensureScheme(url), depth: 0, from: null }],
       fetched: 0,
       failed: 0,
     };
@@ -51,11 +51,17 @@ export class CrawlSession extends DurableObject {
               break;
             }
 
-            const result = await crawlDepth(url, d, sameOriginOnly ?? true, (progress) => {
-              controller.enqueue(
-                encoder.encode(JSON.stringify({ type: 'progress', progress }) + '\n')
-              );
-            });
+            const result = await crawlDepth(
+              ensureScheme(url),
+              d,
+              sameOriginOnly ?? true,
+              (progress) => {
+                controller.enqueue(
+                  encoder.encode(JSON.stringify({ type: 'progress', progress }) + '\n')
+                );
+              },
+              () => this.state?.status === 'stopped'
+            );
 
             this.state.nodes.push(...result.nodes);
             this.state.links.push(...result.links);
@@ -66,7 +72,7 @@ export class CrawlSession extends DurableObject {
           if (this.state?.status !== 'stopped') {
             this.state.status = 'completed';
             const graphData = createGraphData(
-              url,
+              ensureScheme(url),
               depth,
               sameOriginOnly ?? true,
               this.state.nodes,

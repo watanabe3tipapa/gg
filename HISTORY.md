@@ -4,9 +4,21 @@ gg (graph_gen) のバージョン履歴。
 
 ---
 
+## v0.1.2 (2026-09-05)
+
+総点検（機能・整合性チェック）。
+
+- crawler ノード重複排除・URLスキーム自動補完
+- viewer 統計のゼロ除算ガード・URL正規化
+- Astro LP の `/gg` base パス修正（logo / favicon）
+- viewer API サンプルを Worker 実URLに更新
+- deploy.yml から壊れた deploy-cloudflare ジョブを削除（CF Pages は Git 連携）
+- astro/wrangler.toml 削除
+- ドキュメント URL 修正
+
 ## v0.1.1 (2026-08-27)
 
-Cloudflare Pages デプロイ中。true コマンド。
+Cloudflare Pages デプロイ設定の確定（root package.json の build スクリプトで `/gg` base を CF 用に除去）。
 
 ## v0.1.0 (2026-08-27)
 
@@ -48,9 +60,9 @@ Cloudflare Pages デプロイ中。true コマンド。
 ### デプロイ
 
 - GitHub Pages: `https://watanabe3tipapa.github.io/gg/`
-- Cloudflare Pages: `https://gg.pages.dev/`
-- GitHub Actions で自動デプロイ
-
-　　"npx wrangler pages deploy dist --project-name=gg"
+- Cloudflare Pages: `https://gg-7sj.pages.dev/`
+- Worker API: `https://gg-worker.watanabe3ti.workers.dev/`
+- GitHub Actions で GitHub Pages 自動デプロイ
+- Cloudflare Pages はダッシュボードの Git 連携で自動デプロイ（Build command: `npm run build`、output: `dist`）
 
 ---

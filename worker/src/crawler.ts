@@ -54,17 +54,21 @@ export async function crawlDepth(
   url: string,
   depth: number,
   sameOriginOnly: boolean,
-  onProgress?: (progress: { current: number; total: number; message: string }) => void
+  onProgress?: (progress: { current: number; total: number; message: string }) => void,
+  shouldStop?: () => boolean
 ): Promise<{ nodes: GraphNode[]; links: GraphLink[]; fetched: number; failed: number }> {
-  const startOrigin = new URL(url).origin;
+  const startUrl = ensureScheme(url);
+  const startOrigin = new URL(startUrl).origin;
   const nodes: GraphNode[] = [];
   const links: GraphLink[] = [];
   const visited: Record<string, number> = {};
-  const queue: Array<{ url: string; depth: number; from: string | null }> = [{ url, depth: 0, from: null }];
+  const queue: Array<{ url: string; depth: number; from: string | null }> = [{ url: startUrl, depth: 0, from: null }];
   let fetched = 0;
   let failed = 0;
 
   while (queue.length > 0) {
+    if (shouldStop?.()) break;
+
     const { url: currentUrl, depth: currentDepth, from } = queue.shift()!;
 
     if (currentDepth > depth) continue;
@@ -145,6 +149,12 @@ export function createGraphData(
   fetched: number,
   failed: number
 ): GraphData {
+  const nodeMap = new Map<string, GraphNode>();
+  for (const n of nodes) {
+    if (!nodeMap.has(n.id)) nodeMap.set(n.id, n);
+  }
+  const uniqueNodes = [...nodeMap.values()];
+
   const linkSet = new Set<string>();
   const uniqueLinks: GraphLink[] = [];
   for (const l of links) {
@@ -160,13 +170,17 @@ export function createGraphData(
     crawledAt: new Date().toISOString(),
     config: { maxDepth, sameOriginOnly },
     stats: {
-      nodes: nodes.length,
+      nodes: uniqueNodes.length,
       links: uniqueLinks.length,
-      maxDepth: Math.max(...nodes.map(n => n.depth), 0),
+      maxDepth: Math.max(...uniqueNodes.map(n => n.depth), 0),
       fetched,
       failed,
     },
-    nodes,
+    nodes: uniqueNodes,
     links: uniqueLinks,
   };
+}
+
+export function ensureScheme(url: string): string {
+  return /^https?:\/\//i.test(url) ? url : 'https://' + url;
 }

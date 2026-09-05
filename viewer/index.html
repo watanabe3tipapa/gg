@@ -185,8 +185,8 @@
 
   <section class="code-block" id="api">
     <h3>API — Worker エンドポイント</h3>
-    <pre><code><span class="c">// POST /api/crawl</span>
-<span class="k">const</span> response = <span class="k">await</span> <span class="f">fetch</span>(<span class="s">'/api/crawl'</span>, {
+    <pre><code><span class="c">// POST https://gg-worker.watanabe3ti.workers.dev/api/crawl</span>
+<span class="k">const</span> response = <span class="k">await</span> <span class="f">fetch</span>(<span class="s">'https://gg-worker.watanabe3ti.workers.dev/api/crawl'</span>, {
   <span class="f">method</span>: <span class="s">'POST'</span>,
   <span class="f">headers</span>: { <span class="s">'Content-Type'</span>: <span class="s">'application/json'</span> },
   <span class="f">body</span>: JSON.<span class="f">stringify</span>({
