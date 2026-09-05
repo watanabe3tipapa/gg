@@ -124,3 +124,5 @@ gg/
 5. **deploy-cloudflare ジョブ削除** — Actions の `pages deploy dist` はルートに `dist`（ビルド成果物）が無く必ず失敗していたが、CF Pages は dashboard の Git 連携でビルドするため重複。削除して CI を GH Pages のみに。
 6. **`sed -i` の互換性修正** — macOS（BSD sed）で `-i` が引数を要求するため `-i ''` に変更。ローカルでの `npm run build` が可能に。
 7. **ドキュメント更新** — HISTORY.md の誤 URL（`gg.pages.dev` → `gg-7sj.pages.dev`）、README/README_en のデプロイ手順（Root directory `astro` 記述を廃止）、Worker URL 追記を実施。
+8. **Worker 消滅による 404（Load failed）を再デプロイで復旧（2026-09-05）** — `https://gg-worker.watanabe3ti.workers.dev` が全パス 404（error code 1042）になっていた。`wrangler deployments list` で「Worker does not exist」を確認し、`npx wrangler deploy` で復旧。Worker はアカウント上から消えることがあるため、異常時はまず `deployments list` と `curl` で稼働確認する。
+9. **viewer のストリーミング JSON 解析修正（2026-09-05, commit `2ad0f9b`）** — Worker は各イベントを `\n` 付き JSON 行でストリーミングするが、HTTP チャンク境界で 1 行が途中分割され `JSON.parse` が `Unterminated string` で失敗。viewer/js/app.js をバッファ方式（行分割後の残りを次チャンクに持ち越し）に修正。`TextDecoder.decode(value, { stream: true })` で UTF-8 の途中分割にも対応。`viewer/` → `astro/public/viewer/` に同期。
