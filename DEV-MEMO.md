@@ -4,14 +4,15 @@
 汎用グラフ生成ツール。URLからリンク構造を採取し、Three.js 3Dで可視化する。
 
 ## 現在のバージョン
-- **v0.1.7 (2026-09-05)** — バージョン管理箇所を統一: README バッジ / `astro/package.json` / `worker/package.json` / 各 lock / HISTORY.md
+- **v0.1.8 (2026-09-15)** — JS 動的サイトへの警告表示・既知の制約の文書化・サンプル URL を `toolsmith.watanabe3ti.com` に変更。CF Pages プロジェクト名を `graph-gen` に変更
 
-## デプロイ先（2026-09-05 確定）
-- GitHub Pages: `https://watanabe3tipapa.github.io/gg/`（Actions で `astro/dist` をアップロード）
+## デプロイ先（2026-09-05 確定、2026-09-15 更新）
+- GitHub Pages: `https://watanabe3tipapa.github.io/gg/`（Actions で `astro/dist` をアップロード。public リポジトリ必須）
 - Cloudflare Pages: `https://gg-7sj.pages.dev/`（dashboard Git連携。Build: `npm run build` / Output: `dist`）
 - Worker API: `https://gg-worker.watanabe3ti.workers.dev/`
 - Cloudflare アカウント: `watanabe3tipapa - Account`（ID `ffffc09ed50f0e79f23694b06e4cf413`）
-- CF Pages のドメインはプロジェクト名 `gg` ではなくランダム suffix（`gg-7sj`）が付く点に注意
+- **CF Pages プロジェクト名は `graph-gen`**（2026-09-15 改名。URL の `gg-7sj.pages.dev` は変更不可）
+- CF Pages の `*.pages.dev` ドメインはプロジェクト名変更では変わらない（名前作成時に世界で一意に割当）。`graph-gen.pages.dev` は既に使用済みで取得不可 → `graph-gen-c29.pages.dev` が割当になったが、移行せずプロジェクト名のみ `graph-gen` とした
 
 ## アーキテクチャ
 - **Client**: Astro LP + Three.js 3D Viewer
@@ -129,3 +130,4 @@ gg/
 10. **CF Pages ビルド失敗の原因と修正（2026-09-05, commit `a67a5c0`）** — ルート `package.json` の `sed -i ''` は macOS（BSD sed）専用の書き方で、CF Pages の Linux（GNU sed）ビルド環境では `can't read s|/gg/...` で失敗していた（従来 `-i ''` は「空ファイル名」扱い）。`-i.bak` + `sed` 後に `rm -f *.bak` に変更し、両 OS で動作するように。直近 5 回の CF Pages デプロイがこのせいで失敗し、`app.js` 修正が反映されない原因だった。
 11. **リポジトリの public 化（2026-09-05）** — private のままでは GitHub Pages が Free プランで利用不可（`Your current plan does not support GitHub Pages`）。`gh repo edit watanabe3tipapa/gg --visibility public --accept-visibility-change-consequences` で public 化し、`POST /repos/{owner}/{repo}/pages`（build_type=workflow）で Pages サイトを作成。以後 GitHub Actions の Deploy が成功（GitHub Pages は public リポジトリ必須、CF Pages は private でも可）。
 12. **JS 動的サイトはリンク検出不可を確認・ガード（2026-09-15）** — `watanabe3ti.com` は SPA で HTML に `<a href>` が無く、クロール結果が必ず nodes:1 / links:0 になる（example.com では正常にリンクを検出することを確認済み、ツール側のバグではない）。回避策として viewer に **「リンクが見つかりませんでした」警告（status-bar の warning 表示）** を追加し、README / README_en / LP に制約を記載。JS レンダリング対応（Playwright 等）は Worker の制約上見送り。「必要ならユーザーが JS 対策済みの HTML スナップショットを JSON 読込モードで読み込める」旨も併記検討。`viewer/` → `astro/public/viewer/` に同期済み。
+13. **CF Pages プロジェクト名を `graph-gen` に変更（2026-09-15）** — `PATCH /accounts/{account_id}/pages/projects/{name}` で改名可能だが、**`*.pages.dev` の URL は変わらない**（名前作成時に世界で一意に割当）。`graph-gen.pages.dev` は他者が使用中のため取得不可 → 新規作成では `graph-gen-c29.pages.dev` になる（Git 連携は空のため使用せず即削除）。結論: プロジェクト名のみ `graph-gen`、URL は `gg-7sj.pages.dev` のまま継続。
