@@ -1,4 +1,4 @@
-# gg — graph_gen
+# gg — graph-gen
 
 **リンク構造を、インタラクティブに。**
 

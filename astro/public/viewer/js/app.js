@@ -25,6 +25,18 @@ class GGApp {
     this.initDemoForm();
     this.initLayoutSwitch();
     this.initActions();
+
+    if (!this.renderer.supported) {
+      this.showWebGlWarning();
+    }
+  }
+
+  showWebGlWarning() {
+    const bar = document.getElementById('status-bar');
+    bar.classList.add('visible');
+    bar.classList.add('warning');
+    document.getElementById('status-text').innerHTML =
+      '<b>3D 描画を表示できません</b> ※ WebGL が利用できないためグラフ表示のみ無効です。ブラウザの「ハードウェアアクセラレーション」を有効にして再読込してください。<br><small>（クロール・統計は引き続き動作します）</small>';
   }
 
   initTabs() {
@@ -214,7 +226,11 @@ class GGApp {
   applyLayout(data) {
     const layout = this.layouts[this.currentLayout];
     const positions = layout.compute(data);
-    this.renderer.render(data, positions);
+    if (!this.renderer.supported) {
+      this.showWebGlWarning();
+    } else {
+      this.renderer.render(data, positions);
+    }
   }
 
   updateStats(data) {

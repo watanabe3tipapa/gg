@@ -1,4 +1,4 @@
-# gg — graph_gen
+# gg — graph-gen
 
 **Links, visualized interactively.**
 

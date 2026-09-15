@@ -19,17 +19,17 @@ export class GraphRenderer {
     this.canvas = document.getElementById(canvasId);
     this.scene = new THREE.Scene();
     this.camera = new THREE.PerspectiveCamera(60, 1, 0.1, 2000);
-    this.renderer = new THREE.WebGLRenderer({ canvas: this.canvas, antialias: true, alpha: true });
-    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    this.renderer.setClearColor(0x11141d, 1);
+    this.supported = true;
 
-    this.controls = new OrbitControls(this.camera, this.canvas);
-    this.controls.enableDamping = true;
-    this.controls.dampingFactor = 0.08;
-    this.controls.rotateSpeed = 0.6;
-    this.controls.zoomSpeed = 1.2;
-    this.controls.minDistance = 2;
-    this.controls.maxDistance = 500;
+    try {
+      this.renderer = new THREE.WebGLRenderer({ canvas: this.canvas, antialias: true, alpha: true });
+      this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      this.renderer.setClearColor(0x11141d, 1);
+    } catch (err) {
+      this.supported = false;
+      this.renderer = null;
+      console.warn('gg: WebGL is unavailable, 3D rendering disabled:', err.message);
+    }
 
     this.raycaster = new THREE.Raycaster();
     this.mouse = new THREE.Vector2();
@@ -42,6 +42,16 @@ export class GraphRenderer {
     this.selectedNode = null;
     this.onNodeClick = null;
     this.onNodeHover = null;
+
+    if (!this.supported) return;
+
+    this.controls = new OrbitControls(this.camera, this.canvas);
+    this.controls.enableDamping = true;
+    this.controls.dampingFactor = 0.08;
+    this.controls.rotateSpeed = 0.6;
+    this.controls.zoomSpeed = 1.2;
+    this.controls.minDistance = 2;
+    this.controls.maxDistance = 500;
 
     this.setupLight();
     this.setupEvents();
@@ -66,6 +76,7 @@ export class GraphRenderer {
     const rect = this.container.getBoundingClientRect();
     this.camera.aspect = rect.width / rect.height;
     this.camera.updateProjectionMatrix();
+    if (!this.supported) return;
     this.renderer.setSize(rect.width, rect.height);
     if (this.animationId) cancelAnimationFrame(this.animationId);
     this.animate();
@@ -73,6 +84,7 @@ export class GraphRenderer {
 
   animate() {
     this.animationId = requestAnimationFrame(() => this.animate());
+    if (!this.supported) return;
     this.controls.update();
     this.renderer.render(this.scene, this.camera);
   }
@@ -81,6 +93,7 @@ export class GraphRenderer {
     this.nodeData = data.nodes;
     this.linkData = data.links;
     this.nodePositions.clear();
+    if (!this.supported) return;
 
     this.clearScene();
 
