@@ -193,9 +193,22 @@ class GGApp {
     this.hideStatus();
     this.updateStats(data);
     this.applyLayout(data);
+    this.checkDegenerateGraph(data);
     setTimeout(() => {
       document.getElementById('graph-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
     }, 60);
+  }
+
+  checkDegenerateGraph(data) {
+    const nodes = data?.nodes?.length ?? 0;
+    const links = data?.links?.length ?? 0;
+    if (nodes <= 1 && links === 0) {
+      const bar = document.getElementById('status-bar');
+      bar.classList.add('visible');
+      bar.classList.add('warning');
+      document.getElementById('status-text').innerHTML =
+        '<b>リンクが見つかりませんでした</b> ※ このサイトは JavaScript で動的に描画されているため、HTML 内にリンクが無い可能性があります。';
+    }
   }
 
   applyLayout(data) {
@@ -220,12 +233,15 @@ class GGApp {
   }
 
   showStatus(msg) {
-    document.getElementById('status-bar').classList.add('visible');
+    const bar = document.getElementById('status-bar');
+    bar.classList.add('visible');
+    bar.classList.remove('warning');
     document.getElementById('status-text').innerHTML = `<b>${msg}</b>`;
   }
 
   hideStatus() {
     document.getElementById('status-bar').classList.remove('visible');
+    document.getElementById('status-bar').classList.remove('warning');
   }
 
   updateProgress(progress) {

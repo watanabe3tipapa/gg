@@ -2,6 +2,6 @@
   "name": "gg",
   "type": "module",
   "scripts": {
-    "build": "cd astro && npm install && npm run build && cp -r dist ../dist && sed -i.bak 's|/gg/|/|g; s|href=\"/gg|href=\"|g; s|src=\"/gg|src=\"|g' ../dist/index.html && rm -f ../dist/index.html.bak"
+    "build": "rm -rf ../dist && cd astro && npm install && npm run build && cp -r dist ../dist && sed -i.bak 's|/gg/|/|g; s|href=\"/gg|href=\"|g; s|src=\"/gg|src=\"|g' ../dist/index.html && rm -f ../dist/index.html.bak"
   }
 }

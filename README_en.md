@@ -117,6 +117,15 @@ Stops the session.
 
 ---
 
+## Known Limitations
+
+- The crawler only extracts links from **static HTML `<a href>` tags**. Links generated dynamically by JavaScript (SPA / client-side rendering) **cannot be detected**.
+  - Example: `watanabe3ti.com` is a JS-rendered site, so it produces 0 links (expected behavior).
+  - In that case, the viewer shows a warning.
+- A single-page result may contain only 1 node.
+
+---
+
 ## Tech Stack
 
 | Layer | Technology |

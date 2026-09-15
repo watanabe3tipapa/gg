@@ -4,6 +4,15 @@ gg (graph_gen) のバージョン履歴。
 
 ---
 
+## v0.1.8 (2026-09-15)
+
+JS 動的サイト（SPA）への対応方針を確定。
+
+- クローラーは静的な `<a href>` のみ取得する仕様であることを確認（`watanabe3ti.com` は 0 リンクが正しい挙動）
+- viewer にリンク 0 件時の警告表示を追加（status-bar の warning）
+- README / README_en / LP（index.astro）に「既知の制約」を記載
+- JS レンダリング対応（Playwright 等）は Worker の制約上見送り
+
 ## v0.1.7 (2026-09-05)
 
 現在のリリース状態。バージョン表記の全箇所を統一。

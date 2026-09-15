@@ -71,6 +71,10 @@ import GraphViewer from '../components/GraphViewer.astro';
         <h3>POST /api/session?id=</h3>
         <p>セッションを停止。クロールを途中で中断します。</p>
       </div>
+      <div class="feature-card">
+        <h3>既知の制約</h3>
+        <p>クローラーは静的な HTML のリンクのみ取得します。JavaScript で動的に生成されるリンク（SPA 等）は検出できず、その場合はビューアに警告が表示されます。</p>
+      </div>
     </div>
   </section>
 

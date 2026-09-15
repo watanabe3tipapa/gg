@@ -65,9 +65,11 @@ select:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-d
 .btn-primary { background: var(--accent); color: #fff; box-shadow: 0 8px 28px -8px var(--accent-glow); }
 .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 12px 36px -8px var(--accent-glow); }
 .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
-
 .status-bar { display: none; align-items: center; gap: 0.7rem; max-width: 600px; margin: 1rem auto 0; padding: 0.7rem 1rem; background: var(--bg-elevated); border: 1px solid var(--line); border-radius: 10px; }
+
 .status-bar.visible { display: flex; }
+
+.status-bar.warning { background: #fff8e1; border-color: #f9c74f; }
 .spinner { width: 16px; height: 16px; border: 2px solid var(--ink-faint); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; flex-shrink: 0; }
 @keyframes spin { to { transform: rotate(360deg); } }
 .status-text { font-size: 0.82rem; color: var(--ink-muted); }
